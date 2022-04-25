@@ -4,42 +4,32 @@
 #include <iomanip>
 #include <windows.h>
 #include "Lista.cpp"
+#include "Tablica.cpp"
+#include "Kopiec.cpp"
+//#include "DrzewoBST.cpp"
 
 using namespace std;
 
-long long int read_QPC() // funkcja mierzaca czas algorytmu
+/*long long int read_QPC() // funkcja mierzaca czas algorytmu
 {
 	LARGE_INTEGER count;
 	QueryPerformanceCounter(&count);
 	return((long long int)count.QuadPart);
-}
+}*/
 
-long long int frequency, start, elapsed;
+//long long int frequency, start, elapsed;
 
-List lista = List();
-ElemList* listhead;
-ElemList* listtail;
 
-void displayMenu()
-{
-	cout << endl;
-	cout << "----- LISTA -----" << endl;
-	cout << "1.Wczytaj z pliku" << endl;
-	cout << "2.Usun" << endl;
-	cout << "3.Dodaj" << endl;
-	cout << "4.Znajdz" << endl;
-	cout << "5.Utworz losowo" << endl;
-	cout << "6.Wyswietl" << endl;
-	cout << "7.Test (pomiary)" << endl;
-	cout << "0.Powrot do menu" << endl;
-	cout << "Podaj opcje:";
-}
+List lista;
+Table tablica;
+//Heap kopiec;
+Max_Heap kopiec;
 
-void FileGenerator(int size) //funkcja generuje plik z liczbami (ilosc liczb jest rowna size)
+string FileGenerator(int size) //funkcja generuje plik z liczbami (ilosc liczb jest rowna size)
 {
     string file;
     srand(time(NULL));
-    cout << "Wprowadz nazwe pliku: " << endl;
+    cout << "Wprowadz nazwe nowego pliku zrodlowego do struktury: " << endl;
     cin >> file;
     ofstream MyFile;
     MyFile.open(file);
@@ -47,6 +37,7 @@ void FileGenerator(int size) //funkcja generuje plik z liczbami (ilosc liczb jes
     for (int i = 0; i < size; i++)
         MyFile << rand() % 10000000000000 - 10000 << endl;
     MyFile.close();
+	return file;
 }
 
 void ListMenu()
@@ -57,32 +48,30 @@ void ListMenu()
 
 
 	do {
-		displayMenu();
+		lista.displayMenu();
 		cin >> option;
 		cout << endl;
 		switch (option) {
 		case 1: //wczytytwanie listy z pliku
 			cout << " Podaj nazwe zbioru:";
 			cin >> fileName;
-			start = read_QPC(); // poczatek pomiaru 
-			lista.loadFromFile(listhead, fileName);
-			listtail = lista.findTail(listhead);
-			lista.display(listhead);
-			lista.displayBackwards(listtail);
-			elapsed = read_QPC() - start; // koniec pomiaru 
-			cout << "Czas[ms] = " << setprecision(0) << (1000.0 * elapsed) / frequency << endl;
-
+			lista.loadFromFile(fileName);
+			lista.display();
+			lista.displayBackwards();
 			break;
 
 		case 2: // usuwanie elemenu z listy
 			cout << " Podaj wartosc:";
-			cin >> value;
-			start = read_QPC(); // poczatek pomiaru 
-			lista.deleteFromList(listhead, listtail, value);
-			elapsed = read_QPC() - start; // koniec pomiaru 
-			cout << "Czas[ms] = " << setprecision(0) << (1000.0 * elapsed) / frequency << endl;
-
-			lista.display(listhead);
+			cin >> value; 
+			// ------ POCZATKOWEGO -----------
+			lista.pop_front();
+			lista.display();
+			// ------ KONCOWEGO -----------
+			lista.pop_back();
+			lista.display();
+			// ---------WYBRANEGO-------------
+			lista.deleteFromList(value);
+			lista.display();
 			break;
 
 		case 3: // dodawanie elemetu do listy
@@ -92,73 +81,250 @@ void ListMenu()
 			cin >> value;
 			cout << "Wartosc dodana na poczatek listy" << endl;
 
-			start = read_QPC(); // poczatek pomiaru 
-			lista.push_front(listhead, value);
-			
-			elapsed = read_QPC() - start; // koniec pomiaru 
-			cout << "Czas[ms] = " << setprecision(0) << (1000.0 * elapsed) / frequency << endl;
-			lista.display(listhead); cout << endl;
+			lista.push_front(value);
+			lista.display(); cout << endl;
+
 			cout << "Wartosc dodana na koniec listy" << endl;
-			
-			start = read_QPC(); // poczatek pomiaru 
-			lista.push_back(listtail, value);
-			elapsed = read_QPC() - start; // koniec pomiaru 
-			cout << "Czas[ms] = " << setprecision(0) << (1000.0 * elapsed) / frequency << endl;
+			lista.push_back(value);
+			lista.display(); cout << endl;
 
-			lista.display(listhead); cout << endl;
 			cout << "Wartosc dodana w miejsce o podanym indeksie " << index << " listy" << endl;
-			
-			start = read_QPC(); // poczatek pomiaru 
-			lista.push_whereIndex(listhead, value, index);
-			elapsed = read_QPC() - start; // koniec pomiaru 
-			cout << "Czas[ms] = " << setprecision(0) << (1000.0 * elapsed) / frequency << endl;
-
-			lista.display(listhead); cout << endl;
+			lista.push_whereIndex(value, index);
+			lista.display(); cout << endl;
 			break;
 
 		case 4: //znajdywanie elemetu w liscie
 			cout << " Podaj wartosc:";
 			cin >> value;
-
-			start = read_QPC(); // poczatek pomiaru 
-			if (lista.IsValueInList(listhead, value))
+			if (lista.IsValueInList(value))
 				cout << "Podana wartosc jest w liscie" << endl;
 			else
 				cout << "Podanej wartosci nie ma w liscie" << endl;
-			elapsed = read_QPC() - start; // koniec pomiaru 
-			cout << "Czas[ms] = " << setprecision(0) << (1000.0 * elapsed) / frequency << endl;
-
 			break;
 
 		case 5:  // generowanie  listy
+			
+			lista.~List(); // usuwanie poprzedniej listy jezeli byla 
 			cout << "Podaj ilosc elementow listy:";
 			cin >> value;
-
-			start = read_QPC(); // poczatek pomiaru 
-			FileGenerator(value);
-			elapsed = read_QPC() - start; // koniec pomiaru 
-			cout << "Czas[ms] = " << setprecision(0) << (1000.0 * elapsed) / frequency << endl;
-
-			lista.display(listhead);
+			lista.loadFromFile(FileGenerator(value));
+			lista.display();
 			break;
 
 		case 6:  // wyswietlanie listy
 			
-			start = read_QPC(); // poczatek pomiaru 
-			lista.display(listhead);
-			lista.displayBackwards(listtail);
-			elapsed = read_QPC() - start; // koniec pomiaru 
-			cout << "Czas[ms] = " << setprecision(0) << (1000.0 * elapsed) / frequency << endl;
+			lista.display();
+			lista.displayBackwards();
 			break;
 
 		case 7: //eksperymenty
-			cout << "Ogon listy: " << endl;
-			cout << listtail << endl;
+			lista.eksperymenty();
 			break;
 		}
 
 	} while (option != 0);
+	lista.~List(); // usuwanie listy 
 }
+
+void TableMenu()
+{
+	int opt;
+	string fileName;
+	int index, value;
+
+
+	do {
+		tablica.displayMenu();
+		cin >> opt;
+		cout << endl;
+		switch (opt) {
+		case 1: //tutaj wczytytwanie  tablicy z pliku
+			cout << " Podaj nazwe zbioru:";
+			cin >> fileName;
+			tablica.loadFromFile(fileName);
+			tablica.display();
+			break;
+
+		case 2: //tutaj usuwanie elemenu z tablicy
+			cout << " podaj index:";
+			cout << "Usunuecie ostatmiego elementu:" << endl;
+			cin >> index;
+			cout << "Usunuecie ostatmiego elementu:" << endl;  
+			tablica.pop_back();
+			tablica.display();
+			cout << "Usunuecie pierwszego elementu:" << endl;
+			tablica.pop_front();
+			tablica.display();
+			break;
+
+		case 3: // dodawanie elemetu do tablicy
+			cout << " podaj index:";
+			cin >> index;
+			cout << " podaj waertość:";
+			cin >> value;
+			cout << "Wartosc dodana z przodu tablicy" << endl;
+			tablica.push_front(value);
+			tablica.display();
+			cout << "Wartosc dodana na koniec tablicy" << endl;
+			tablica.push_back(value);
+			tablica.display();
+			cout << "Wartosc dodana w miejsce o wskazanym indeksie tablicy" << endl;
+			tablica.addValue(index, value);
+			tablica.display();
+			break;
+
+		case 4: //tutaj znajdowanie elemetu w tablicy
+			cout << " podaj waertość:";
+			cin >> value;
+			if (tablica.IsValueInTable(value))
+				cout << "poadana wartosc jest w tablicy";
+			else
+				cout << "poadanej wartości NIE ma w tablicy";
+			break;
+
+		case 5:  //tutaj generowanie  tablicy		
+			tablica.DeleteTable();
+			cout << "Podaj ilość elementów tablicy:";
+			cin >> value;
+			tablica.loadFromFile(FileGenerator(value));
+			tablica.display();
+			break;
+
+		case 6:  //tutaj wyświetlanie tablicy
+			tablica.display();
+			break;
+
+		case 7: // funkcja do eksperymentów
+			//tablica.Eksperymenty();
+			break;
+		}
+
+	} while (opt != 0);
+}
+
+void HeapMenu()
+{
+	int opt;
+	string fileName;
+	int index, value;
+
+
+	do {
+		tablica.displayMenu();
+		cin >> opt;
+		cout << endl;
+		switch (opt) {
+		case 1: //tutaj wczytytwanie  kopca z pliku
+			cout << " Podaj nazwe zbioru:";
+			cin >> fileName;
+			kopiec.loadFromFile(fileName);
+			kopiec.print();
+			break;
+
+		case 2: //tutaj usuwanie elemenu z kopca
+			cout << " podaj wartosc:";
+			cin >> value;
+			cout << "Usunuecie elementu:" << endl;
+			//kopiec.remove(value);
+			//kopiec.display();
+			break;
+
+		case 3: // dodawanie elemetu do kopca
+			cout << " podaj wartosc:";
+			cin >> value;
+			cout << "Wartosc dodana do kopca" << endl;
+			//kopiec.add(value);
+			//kopiec.display();
+			break;
+
+		case 4: //tutaj znajdowanie elemetu w kopcu		
+			cout << " podaj wartosc:";
+			cin >> value;
+			//if (kopiec.IsValueInHeap(value))
+				cout << "Szukana wartosc jest w kopcu" << endl;
+			//else
+				cout << "Danej wartosci NIE ma w kopcu" << endl;
+			break;
+
+		case 5:  //tutaj generowanie  kopca										********************************************
+			cout << "Podaj ilość elementów kopca:";
+			cin >> value;
+			kopiec.loadFromFile(FileGenerator(value));
+			//kopiec.display();
+			break;
+
+		case 6:  //tutaj wyświetlanie kopca													
+			//kopiec.display();
+			break;
+
+		case 7: // funkcja do eksperymentów
+			break;
+		}
+
+	} while (opt != 0);
+	//kopiec.~Kopiec();
+}
+
+/*void BSTMenu()
+{
+	int opt;
+	string fileName;
+	int index, value;
+
+
+
+	do {
+		tablica.displayMenu();
+		cin >> opt;
+		cout << endl;
+		switch (opt) {
+		case 1: //tutaj wczytytwanie drzewa z pliku           ************************************************
+			cout << " Podaj nazwe zbioru:";
+			cin >> fileName;
+			kopiec.loadFromFile(fileName);
+			kopiec.display();
+			break;
+
+		case 2: //tutaj usuwanie elemenu z drzewa           ********************************************
+			cout << " podaj wartosc:";
+			cin >> value;
+			cout << "Usunuecie elementu:" << endl;
+			kopiec.remove(value);
+			kopiec.display();
+			break;
+
+		case 3: // dodawanie elemetu do drzewa				*************************************************
+			cout << " podaj wartosc:";
+			cin >> value;
+			cout << "Wartosc dodana do kopca" << endl;
+			kopiec.add(value);
+			kopiec.display();
+			break;
+
+		case 4: //tutaj znajdowanie elemetu w drzewie			**********************************************	
+			cout << " podaj wartosc:";
+			cin >> value;
+			kopiec.IsValueInHeap(value);
+			break;
+
+		case 5:  //tutaj generowanie  drzewa										********************************************
+			cout << "Podaj ilość elementów kopca:";
+			cin >> value;
+			kopiec.loadFromFile(FileGenerator(value));
+			kopiec.display();
+			break;
+
+		case 6:  //tutaj wyświetlanie drzewa								*****************************************												
+			kopiec.display();
+			break;
+
+		case 7: // funkcja do eksperymentów
+			break;
+		}
+
+	} while (opt != 0);
+}*/
+
 
 
 
@@ -172,14 +338,13 @@ void ListMenu()
 
 int main()
 {
-	
-	QueryPerformanceFrequency((LARGE_INTEGER*)&frequency);
+	QueryPerformanceFrequency((LARGE_INTEGER*)&frequency); // funkcja mierzaca czas
+
     int size, option1; //rozmiar struktury, numer opcji
 
     do
     {
-        cout << "=========== MENU GLOWNE ===========\n1. Tablica\n2. Lista dwukierunkowa\n3. Kopiec binarny\n4. BST\n5. Drzewo czerwono-czarne\n6. Drzewo AVL\n7. Eksperyment\n0. Zakmnij program\nPodaj opcje:\n";
-
+        cout << "=========== MENU GLOWNE ===========\n1. Tablica\n2. Lista dwukierunkowa\n3. Kopiec binarny\n4. Drzewo BST\n5. Eksperyment\n0. Zakmnij program\nPodaj opcje:\n";
         do
         {
             cin >> option1;
@@ -191,6 +356,7 @@ int main()
         switch (option1)
         {
         case 1: //Tablica
+			TableMenu();
             break;
 
         case 2: //Lista
@@ -198,18 +364,14 @@ int main()
             break;
 
         case 3: //Kopiec
+			//HeapMenu();
             break;
 
         case 4: //BST
             break;
 
-        case 5: //Drzewo czerwono czarne
-            break;
-
-        case 6: //AVL
-            break;
-
-        case 7: //Eksperymenty
+        case 5: //Eksperymenty
+			FileGenerator(1000);
             break;
 
         case 0: // wyjscie 
