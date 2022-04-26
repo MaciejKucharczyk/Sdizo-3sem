@@ -33,12 +33,15 @@ public:
 
 	void pop_front();
 
-	//void deleteFromTable(int index);
+	void deleteFromTable(int index);
 
 	void display();
 
-	//void Eksperymenty();
+	void Eksperymenty1();
+
 	void DeleteTable();
+
+	void Eksperymenty2();
 
 	//void generateTable(int size);
 
@@ -52,7 +55,7 @@ Table::Table()
 
 void Table::push_front(int value) // dodanie wartosci o indeksie 0, czyli pierwszej w tablicy
 {
-	if (oct == 0 || tab == NULL) //jesli tablicy nie ma, to tworzymy ja
+	if (cnt == 0 || tab == NULL) //jesli tablicy nie ma, to tworzymy ja
 	{
 		cnt++;
 		tab = new int[cnt];
@@ -73,13 +76,12 @@ void Table::push_front(int value) // dodanie wartosci o indeksie 0, czyli pierws
 
 void Table::push_back(int value)
 {
-	if (oct == 0 || tab == NULL) //jesli tablicy nie ma, to tworzymy ja
+	if (cnt == 0 || tab == NULL) //jesli tablicy nie ma, to tworzymy ja
 	{
 		tab = new int[cnt];
 		tab[0] = value;
 		return;
 	}
-
 	int* t = tab;
 	tab = new int[cnt+1]; // utworzenie zwiekszonej tablicy 
 	for (int i = 0; i < cnt; i++)
@@ -91,13 +93,21 @@ void Table::push_back(int value)
 
 void Table::addValue(int index, int value)
 {
+	if (index > cnt)
+		return;
 	if (index == 0)
 	{
 		push_front(value);
 		return;
 	}
+	if (index == cnt)
+	{
+		push_back(value);
+		return;
+	}
+	
 	int* t = tab; // tymczasowa kopia pierwotnej tablicy
-	tab = new int[cnt+1]; // zwiekszenie wlasciwej tablicy 
+	tab = new int[cnt + 1]; // zwiekszenie wlasciwej tablicy 
 	for (int i = 0; i < index; i++)
 		tab[i] = t[i];
 	tab[index] = value;
@@ -135,15 +145,41 @@ void Table::pop_front() // usuwanie pierwszego elementu tablicy
 	delete[] t;
 }
 
+void Table::deleteFromTable(int index)
+{
+	if (index >= cnt)
+		return;
+	if (index == 0)
+	{
+		pop_front();
+		return;
+	}
+	if (index == cnt - 1)
+	{
+		pop_back();
+		return;
+	}
+	int* t = tab; // tymczasowa kopia pierwotnej tablicy
+	tab = new int[cnt - 1]; // zmniejszenie wlasciwej tablicy 
+	for (int i = 0; i < index; i++)
+		tab[i] = t[i];
+	for (int i = index; i < cnt; i++)
+		tab[i] = t[i+1];
+	cnt--;
+	delete[] t;
+}
+
 void Table::loadFromFile(string FileName)
 {
+	if (tab != NULL)
+		delete[] tab;
 	int lineNum = 1; // numer linii, z ktorej zczytywane sa dane
 	int size, liczba; // zmienna liczba przechowuje aktualnie zczytywana liczbe
 	fstream File;
 	File.open(FileName);
 	File >> size; // pierwszy element w pliku przechowuje ilosc elementow pliku
 	size = size;
-	tab = new int[size];
+	//tab = new int[size];
 	while (size >= lineNum)
 	{
 		lineNum++;
@@ -201,44 +237,52 @@ void Table::DeleteTable()
 }
 
 
-/*void Table::Eksperymenty()
+void Table::Eksperymenty1()
 {
-	float avgTime1 = 0;
-	float avgTime2 = 0;
+	double avgTime1 = 0;
+	double avgTime2 = 0;
 	cout << "Trwa wykonywanie pomiaru..." << endl;
-	loadFromFile("zzLiczby1000.txt");
-	cout << "1k" << endl;
+	loadFromFile("zzLiczby100000.txt");
+	cout << "100k" << endl;
 
-	int licznik = 123;
-	int indeksik = 0;
+	int test_val = 123;
+	int test_idx = 0;
 	for (int i = 0; i < 2000; i++)
 	{
-		licznik = rand() % 10000 - 5000;
-		//indeksik = rand() %100000;
+		test_val = rand() % 1000 - 500;
+		//test_idx = rand() %1000;
 
-		start = read_QPC(); // poczatek pomiaru 
-		push_front(licznik);
-		elapsed = read_QPC() - start; // koniec pomiaru
-		avgTime1 += (1000000.0 * elapsed) / frequency;
-
-
-		start = read_QPC(); // poczatek pomiaru 
-		push_back(licznik);
-		elapsed = read_QPC() - start; // koniec pomiaru
-		avgTime2 += (1000000.0 * elapsed) / frequency;
-
-		//pop_front(); // usuniecie elementu, aby zachowac ten sam rozmiar listy 
-
-		for (int j = 0; j < 500; j++) // petla zmieniajaca n pierwszych i n ostatnich elementow listy (n_max dobrane do wielkosci pliku)
-		{
-			pop_back();
-			push_front(rand() % 10000);
-		}
+//		start = read_QPC(); // poczatek pomiaru 
+		IsValueInTable(test_val);
+//		elapsed = read_QPC() - start; // koniec pomiaru
+//		avgTime1 += (1000000.0 * elapsed) / frequency;
 	}
 	avgTime1 = avgTime1 / 2000;
-	avgTime2 = avgTime2 / 2000;
-	cout << "Sredni czas dodawania elementu [us]: " << avgTime1 << endl;
-	cout << "Sredni czas dodawania ostatniego elementu [us]: " << avgTime2 << endl;
+	//avgTime2 = avgTime2 / 2000;
+	cout << "Sredni czas usuwania elementu [us]: " << avgTime1 << endl;
+	//cout << "Sredni czas usuwania ostatniego elementu [us]: " << avgTime2 << endl;
 
-	delete[] tab; // usuwanie tablicy
-}*/
+	//delete[] tab; // usuwanie tablicy
+}
+
+void Table::Eksperymenty2()
+{
+	float avgTime1 = 0;
+	int test_val = 123;
+	int test_idx = 0;
+
+	test_val = rand() % 1000 - 500;
+	test_idx = rand() % 100000;
+	
+	loadFromFile("zzLiczby100000.txt");
+	cout << "100k" << endl;
+	cout << test_idx << endl;
+
+//	start = read_QPC(); // poczatek pomiaru 
+	addValue(test_idx, test_val);
+//	elapsed = read_QPC() - start; // koniec pomiaru
+//	avgTime1 += (1000000.0 * elapsed) / frequency;
+
+	cout << "Sredni czas usuwania elementu [us]: " << avgTime1 << endl;
+
+}
