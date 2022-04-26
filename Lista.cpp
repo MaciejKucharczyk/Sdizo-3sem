@@ -3,7 +3,7 @@
 #include <string>
 #include <iomanip>
 #include <windows.h>
-#include "Query.cpp"
+//#include "Query.cpp"
 
 using namespace std;
 
@@ -54,6 +54,8 @@ public:
 	void eksperymenty();
 
 	void DeleteAll();
+
+	int countElements();
 
 
 };
@@ -110,6 +112,20 @@ ElemList* List::IsValueInList(int val)
 		p = p->next;
 	}
 	return NULL;
+}
+
+int List::countElements()
+{
+	int elements = 0;
+	ElemList* p;
+	p = head;
+
+	while (p != NULL)
+	{
+		elements++;
+		p = p->next;
+	}
+	return elements;
 }
 
 void List::addValue(int index, int value)
@@ -187,10 +203,6 @@ void List::displayBackwards()
 	}
 }
 
-/*void List::generateList(int size)
-{
-
-}*/
 
 void List::push_front(int val) //funkcja dodajaca element na poczatek listy
 {
@@ -223,12 +235,58 @@ void List::push_back(int val) //funkcja dodajaca element na koniec listy
 void List::push_whereIndex(int val, int in) //funkcja dodajaca element na miejsce elementu o danym indeksie
 {
 	ElemList* p = new ElemList;
+	p->data = val;
+	ElemList* startElem;
+	int counter = 0; //licznik indeksu
+
+	if (in == 0)
+	{
+		push_front(val);
+		return;
+	}
+	in--;
+
+	startElem = head;
+	while (counter != in)
+	{
+		startElem = startElem->next;
+		counter++;
+	}
+
+	ElemList* prevItem = startElem;
+	ElemList* nextItem = nullptr;
+
+	if (prevItem == tail || prevItem == nullptr)
+		push_back(val);
+	else
+	{
+		//Znajdujemy element, który bêdzie nastêpnikiem nowego.
+		nextItem = prevItem->next;
+		prevItem->next = p;
+		nextItem->prev = p;
+
+		//Na koniec ustawiamy odpowiednie wskaŸniki nowego elementu 
+		p->next = nextItem;
+		p->prev = prevItem;
+	}
+	/*ElemList* p = new ElemList;
 	ElemList* bufor1 = new ElemList;
 	ElemList* bufor2 = new ElemList;
 
-
+	if (in == 0)
+	{
+		push_front(val);
+		return;
+	}
+	if (in == countElements() - 1)
+	{
+		push_back(val);
+		return;
+	}
+	
 	int counter = 0;
 	p = head;
+	bufor1 = head;
 
 	while (p != NULL)
 	{
@@ -236,7 +294,6 @@ void List::push_whereIndex(int val, int in) //funkcja dodajaca element na miejsc
 		{
 			bufor1->data = p->data;
 			p->data = val;
-
 			while (p->next != NULL)
 			{
 				bufor2->data = p->next->data;
@@ -244,14 +301,15 @@ void List::push_whereIndex(int val, int in) //funkcja dodajaca element na miejsc
 				bufor1->data = bufor2->data;
 				p = p->next;
 			}
-			break;
+			return;
 		}
 		else
 		{
 			p = p->next;
+			bufor1 = bufor1->next;
 			counter++;
 		}
-	}
+	}*/
 }
 
 void List::loadFromFile(string filename)
@@ -304,10 +362,10 @@ void List::eksperymenty()
 		licznik = rand() % 10000 - 5000;
 		//indeksik = rand() %100000;
 		
-		start = read_QPC(); // poczatek pomiaru 
+//		start = read_QPC(); // poczatek pomiaru 
 		IsValueInList(licznik);
-		elapsed = read_QPC() - start; // koniec pomiaru
-		avgTime1 += (1000000.0 * elapsed) / frequency;
+//		elapsed = read_QPC() - start; // koniec pomiaru
+//		avgTime1 += (1000000.0 * elapsed) / frequency;
 
 		pop_front(); // usuniecie elementu, aby zachowac ten sam rozmiar listy 
 
