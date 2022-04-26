@@ -6,7 +6,7 @@
 #include "Lista.cpp"
 #include "Tablica.cpp"
 #include "Kopiec.cpp"
-//#include "DrzewoBST.cpp"
+#include "DrzewoBST.cpp"
 
 using namespace std;
 
@@ -22,8 +22,8 @@ using namespace std;
 
 List lista;
 Table tablica;
-//Heap kopiec;
 Max_Heap kopiec;
+BSTtree drzewoBST;
 
 string FileGenerator(int size) //funkcja generuje plik z liczbami (ilosc liczb jest rowna size)
 {
@@ -64,14 +64,15 @@ void ListMenu()
 			cout << " Podaj wartosc:";
 			cin >> value; 
 			// ------ POCZATKOWEGO -----------
-			lista.pop_front();
-			lista.display();
+//			lista.pop_front();
+//			lista.display();
 			// ------ KONCOWEGO -----------
-			lista.pop_back();
-			lista.display();
+//			lista.pop_back();
+//			lista.display();
 			// ---------WYBRANEGO-------------
 			lista.deleteFromList(value);
 			lista.display();
+			lista.displayBackwards();
 			break;
 
 		case 3: // dodawanie elemetu do listy
@@ -81,16 +82,18 @@ void ListMenu()
 			cin >> value;
 			cout << "Wartosc dodana na poczatek listy" << endl;
 
-			lista.push_front(value);
-			lista.display(); cout << endl;
+//			lista.push_front(value);
+//			lista.display(); cout << endl;
 
-			cout << "Wartosc dodana na koniec listy" << endl;
-			lista.push_back(value);
-			lista.display(); cout << endl;
+//			cout << "Wartosc dodana na koniec listy" << endl;
+//			lista.push_back(value);
+//			lista.display(); cout << endl;
 
 			cout << "Wartosc dodana w miejsce o podanym indeksie " << index << " listy" << endl;
 			lista.push_whereIndex(value, index);
-			lista.display(); cout << endl;
+			lista.display(); 
+			lista.displayBackwards();
+			cout << endl;
 			break;
 
 		case 4: //znajdywanie elemetu w liscie
@@ -146,28 +149,30 @@ void TableMenu()
 			break;
 
 		case 2: //tutaj usuwanie elemenu z tablicy
-			cout << " podaj index:";
-			cout << "Usunuecie ostatmiego elementu:" << endl;
+			cout << " podaj index:"<<endl;
 			cin >> index;
-			cout << "Usunuecie ostatmiego elementu:" << endl;  
-			tablica.pop_back();
+			cout << "Usunuecie wybranego elementu elementu:" << endl;
+			tablica.deleteFromTable(index);
 			tablica.display();
-			cout << "Usunuecie pierwszego elementu:" << endl;
-			tablica.pop_front();
-			tablica.display();
+			//cout << "Usunuecie ostatniego elementu:" << endl;  
+			//tablica.pop_back();
+			//tablica.display();
+			//cout << "Usunuecie pierwszego elementu:" << endl;
+			//tablica.pop_front();
+			//tablica.display();
 			break;
 
 		case 3: // dodawanie elemetu do tablicy
 			cout << " podaj index:";
 			cin >> index;
-			cout << " podaj waertość:";
+			cout << " podaj wartosc:";
 			cin >> value;
-			cout << "Wartosc dodana z przodu tablicy" << endl;
-			tablica.push_front(value);
-			tablica.display();
-			cout << "Wartosc dodana na koniec tablicy" << endl;
-			tablica.push_back(value);
-			tablica.display();
+//			cout << "Wartosc dodana z przodu tablicy" << endl;
+//			tablica.push_front(value);
+//			tablica.display();
+//			cout << "Wartosc dodana na koniec tablicy" << endl;
+//			tablica.push_back(value);
+//			tablica.display();
 			cout << "Wartosc dodana w miejsce o wskazanym indeksie tablicy" << endl;
 			tablica.addValue(index, value);
 			tablica.display();
@@ -195,7 +200,7 @@ void TableMenu()
 			break;
 
 		case 7: // funkcja do eksperymentów
-			//tablica.Eksperymenty();
+			tablica.Eksperymenty1();
 			break;
 		}
 
@@ -210,7 +215,7 @@ void HeapMenu()
 
 
 	do {
-		tablica.displayMenu();
+		kopiec.displayMenu();
 		cin >> opt;
 		cout << endl;
 		switch (opt) {
@@ -218,46 +223,53 @@ void HeapMenu()
 			cout << " Podaj nazwe zbioru:";
 			cin >> fileName;
 			kopiec.loadFromFile(fileName);
-			kopiec.print();
+			kopiec.display();
+			kopiec.display_as_table();
 			break;
 
 		case 2: //tutaj usuwanie elemenu z kopca
 			cout << " podaj wartosc:";
 			cin >> value;
 			cout << "Usunuecie elementu:" << endl;
-			//kopiec.remove(value);
-			//kopiec.display();
+			kopiec.remove_key(value);
+			kopiec.display();
+			kopiec.display_as_table();
 			break;
 
 		case 3: // dodawanie elemetu do kopca
 			cout << " podaj wartosc:";
 			cin >> value;
 			cout << "Wartosc dodana do kopca" << endl;
-			//kopiec.add(value);
-			//kopiec.display();
+			kopiec.push(value);
+			kopiec.display();
+			kopiec.display_as_table();
 			break;
 
 		case 4: //tutaj znajdowanie elemetu w kopcu		
 			cout << " podaj wartosc:";
 			cin >> value;
-			//if (kopiec.IsValueInHeap(value))
+			if (kopiec.findValue(value))
 				cout << "Szukana wartosc jest w kopcu" << endl;
-			//else
+			else
 				cout << "Danej wartosci NIE ma w kopcu" << endl;
 			break;
 
 		case 5:  //tutaj generowanie  kopca										********************************************
+			kopiec.clear();
 			cout << "Podaj ilość elementów kopca:";
 			cin >> value;
-			kopiec.loadFromFile(FileGenerator(value));
-			//kopiec.display();
+			kopiec.generate_heap(value);
+			kopiec.display();
+			kopiec.display_as_table();
 			break;
 
 		case 6:  //tutaj wyświetlanie kopca													
-			//kopiec.display();
+			kopiec.display();
+			kopiec.display_as_table();
 			break;
 
 		case 7: // funkcja do eksperymentów
+			kopiec.eksperyment();
 			break;
 		}
 
@@ -265,7 +277,7 @@ void HeapMenu()
 	//kopiec.~Kopiec();
 }
 
-/*void BSTMenu()
+void BSTMenu()
 {
 	int opt;
 	string fileName;
@@ -274,56 +286,60 @@ void HeapMenu()
 
 
 	do {
-		tablica.displayMenu();
+		drzewoBST.displayMenu();
 		cin >> opt;
 		cout << endl;
 		switch (opt) {
-		case 1: //tutaj wczytytwanie drzewa z pliku           ************************************************
+		case 1: //tutaj wczytytwanie drzewa z pliku           
 			cout << " Podaj nazwe zbioru:";
 			cin >> fileName;
-			kopiec.loadFromFile(fileName);
-			kopiec.display();
+			drzewoBST.loadFromFile(fileName);
+			drzewoBST.printTree();
 			break;
 
-		case 2: //tutaj usuwanie elemenu z drzewa           ********************************************
+		case 2: //tutaj usuwanie elemenu z drzewa           
 			cout << " podaj wartosc:";
 			cin >> value;
 			cout << "Usunuecie elementu:" << endl;
-			kopiec.remove(value);
-			kopiec.display();
+			drzewoBST.remove(value);
+			drzewoBST.printTree();
 			break;
 
-		case 3: // dodawanie elemetu do drzewa				*************************************************
+		case 3: // dodawanie elemetu do drzewa				
 			cout << " podaj wartosc:";
 			cin >> value;
-			cout << "Wartosc dodana do kopca" << endl;
-			kopiec.add(value);
-			kopiec.display();
+			cout << "Wartosc dodana do drzewa BST "<< endl;
+			drzewoBST.add(value);
+			drzewoBST.printTree();
 			break;
 
-		case 4: //tutaj znajdowanie elemetu w drzewie			**********************************************	
+		case 4: //tutaj znajdowanie elemetu w drzewie			
 			cout << " podaj wartosc:";
 			cin >> value;
-			kopiec.IsValueInHeap(value);
+			if (drzewoBST.find(value))
+				cout << "Element jest w drzewie" << endl;
+			else
+				cout << "Takiego elementu nie ma w drzewie" << endl;
 			break;
 
-		case 5:  //tutaj generowanie  drzewa										********************************************
+		case 5:  //tutaj generowanie  drzewa									
 			cout << "Podaj ilość elementów kopca:";
 			cin >> value;
-			kopiec.loadFromFile(FileGenerator(value));
-			kopiec.display();
+			drzewoBST.loadFromFile(FileGenerator(value));
+			drzewoBST.printTree();
 			break;
 
-		case 6:  //tutaj wyświetlanie drzewa								*****************************************												
-			kopiec.display();
+		case 6:  //tutaj wyświetlanie drzewa																		
+			drzewoBST.printTree();
 			break;
 
 		case 7: // funkcja do eksperymentów
+			drzewoBST.eksperymenty();
 			break;
 		}
 
 	} while (opt != 0);
-}*/
+}
 
 
 
@@ -364,10 +380,11 @@ int main()
             break;
 
         case 3: //Kopiec
-			//HeapMenu();
+			HeapMenu();
             break;
 
         case 4: //BST
+			BSTMenu();
             break;
 
         case 5: //Eksperymenty
