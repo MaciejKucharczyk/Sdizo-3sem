@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 
 #include "mst.h"
 
@@ -10,77 +11,93 @@ MSTree::MSTree(int n)
 
     ArrNeighbourList = new TNode * [n];         // lista sasiedztwa 
     for (i = 0; i < n; i++) ArrNeighbourList[i] = NULL;
-    ArrSize = n - 1;                  // d³ugoœæ tablicy
+    ArrSize = n - 1;                  // dlugpsctablicy
     TreeWeight = 0;                    // waga calego drzewa
+    matrixMST = new int* [n];          // utworzenie macierzy 
+	for (int i = 0; i < n; i++)
+		matrixMST[i] = new int[n];
+	// inicjalizacja macierzy zerami 
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            matrixMST[i][j] = 0; 
 }
 
 MSTree::MSTree()
 {
-    ArrSize = 0;                  // Zapamiêtujemy d³ugoœæ tablicy
-    TreeWeight = 0;                    // Zerujemy wagê drzewa
+    ArrSize = 0;                  // Zdlugosc tablicy 
+    TreeWeight = 0;                    // waga calego drzewa
 }
 
-// Destruktor - usuwa listy oraz tablicê s¹siedztwa
-//-------------------------------------------------
+
 MSTree::~MSTree()
 {
     int i;
     TNode* p, * r;
 
     if (ArrNeighbourList)
-        for (i = 0; i <= ArrSize; i++)
+    {
+       for (i = 0; i <= ArrSize; i++)
         {
             //p = A[i];
             while (ArrNeighbourList[i])
             {
                 p = ArrNeighbourList[i];
-                r = p;                     // Zapamiêtujemy wskazanie
-                p = p->next;               // Przesuwamy siê do nastêpnego elementu listy
-                delete r;                  // Usuwamy element
+                r = p;                     // Zapamietujemy wskazanie
+                p = p->next;             
+                delete r;                  
             }
         }
-
-    delete[] ArrNeighbourList;                  // Usuwamy tablicê list s¹siedztwa
+        delete[] ArrNeighbourList;   
+    }    
 }
 
-// Dodaje krawêdŸ do drzewa
-//-------------------------
+
 void MSTree::addEdge(Edge e)
 {
     TNode* p;
 
-    TreeWeight += e.weight;            // Do wagi drzewa dodajemy wagê krawêdzi
-    p = new TNode;                 // Tworzymy nowy wêze³
-    p->v = e.v2;                   // Wierzcho³ek koñcowy
-    p->weight = e.weight;          // Waga krawêdzi
-    p->next = ArrNeighbourList[e.v1];          // Dodajemy p do listy wierzcho³ka v1
+    TreeWeight += e.weight;            // Do wagi drzewa dodajemy wage krawedzi
+    p = new TNode;                 // nowy wierzcholek
+    p->v = e.v2;                   // 
+    p->weight = e.weight;         
+    p->next = ArrNeighbourList[e.v1];          // Dodajemy p do listy wierzcholka v1
     ArrNeighbourList[e.v1] = p;
 
-    p = new TNode;                 // To samo dla krawêdzi odwrotnej
-    p->v = e.v1;                   // Wierzcho³ek koñcowy
-    p->weight = e.weight;          // Waga krawêdzi
-    p->next = ArrNeighbourList[e.v2];          // Dodajemy p do listy wierzcho³ka v2
+    p = new TNode;                 // analogicznie dla krawedzi odwrotnej
+    p->v = e.v1;                   
+    p->weight = e.weight;          
+    p->next = ArrNeighbourList[e.v2];          
     ArrNeighbourList[e.v2] = p;
 }
 
-void MSTree::addNode(int n)
+void MSTree::addNode(int n) // uzupelnienie konstruktora bezargumentowego
 {
-    ArrNeighbourList = new TNode * [n];                        // Tablica list 
-    for (int i = 0; i < n; i++) ArrNeighbourList[i] = NULL;     // wype³niamy pustymi listami
-    ArrSize = n - 1;                                 // d³ugoœæ tablicy
-    TreeWeight = 0;                                 // Zerujemy wagê drzewa
+    ArrNeighbourList = new TNode * [n];                        
+    for (int i = 0; i < n; i++) ArrNeighbourList[i] = NULL;     
+    ArrSize = n - 1;                                 
+    TreeWeight = 0;                               
 }
 
-// Zwraca wskaŸnik pocz¹tku listy s¹siadów wierzcho³ka
-//----------------------------------------------------
+void MSTree::makeMatrix(int n)
+{
+    matrixMST = new int* [n];          // utworzenie macierzy 
+	for (int i = 0; i < n; i++)
+		matrixMST[i] = new int[n];
+	// inicjalizacja macierzy zerami 
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            matrixMST[i][j] = 0; 
+}
+
+// Zwraca wskaï¿½nik poczï¿½tku listy sï¿½siadï¿½w wierzchoï¿½ka
+
 TNode* MSTree::getAList(int n)
 {
     return ArrNeighbourList[n];
 }
 
-// Wyœwietla zawartoœæ drzewa oraz jego wagê
-//------------------------------------------
-void MSTree::print_list()
+
+void MSTree::print_list() // wyswietlanie mst listowo
 {
     int i;
     TNode* p;
@@ -94,4 +111,31 @@ void MSTree::print_list()
         cout << endl;
     }
     cout << endl << endl << "Waga drzewa spinajacego = " << TreeWeight << endl << endl;
+}
+
+void MSTree::zeros_matrix(int n) // funkcja inicjalizuje macierz zerami
+{
+        for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            matrixMST[i][j] = 0; 
+}
+
+void MSTree::addToMatrix(int e1, int e2)
+{
+	matrixMST[e1][e2] = 1;
+	matrixMST[e2][e1] = 1;
+}
+
+void MSTree::print_matrixMST(int vertex)
+{
+	cout << "   ";
+	for (int i = 0; i < vertex; i++) 
+		cout << setw(3) << i;
+	cout << endl << endl;
+	for (int i = 0; i < vertex; i++)
+	{
+		cout << setw(3) << i;
+		for (int j = 0; j < vertex; j++) cout << setw(3) << matrixMST[i][j];
+		cout << endl;
+	}
 }
