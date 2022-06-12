@@ -129,7 +129,7 @@ void mst_menu()
 				algorytmy.Random_graph_Generator(d, nn);
 
 				auto t1 = std::chrono::high_resolution_clock::now(); // czas start
-				algorytmy.Prim(vertex);
+				algorytmy.Prim(nn);
 				
 				auto t2 = std::chrono::high_resolution_clock::now();
 				avg1 += std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1).count();
@@ -146,13 +146,13 @@ void mst_menu()
 				algorytmy.Random_graph_Generator(d, nn);
 				
 				auto t1 = std::chrono::high_resolution_clock::now(); // czas start
-				algorytmy.Prim(vertex);
+				algorytmy.Prim(nn);
 				
 				auto t2 = std::chrono::high_resolution_clock::now();
-				avg1 += std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1).count();
+				avg2 += std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1).count();
 			}
 			avg2 = avg2 / 50;
-			cout << d << " " << nn << endl << "Sredni czas Prim [us]: " << avg2 << endl;
+			cout << d << " " << nn << endl << "Sredni czas Prim [ns]: " << avg2 << endl;
 			Timefile <<"Gestosc: "<< d << " Wierzcholki: " << nn << endl;
 			Timefile << "Czas: "<< avg2 << endl;
 
@@ -163,13 +163,13 @@ void mst_menu()
 				algorytmy.Random_graph_Generator(d, nn);
 				//start = read_QPC(); // poczatek pomiaru
 				auto t1 = std::chrono::high_resolution_clock::now(); // czas start
-				algorytmy.Prim(vertex);
+				algorytmy.Prim(nn);
 				//elapsed = read_QPC() - start; // koniec pomiaru
 				auto t2 = std::chrono::high_resolution_clock::now();
-				avg1 += std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1).count();
+				avg3 += std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1).count();
 			}
 			avg3 = avg3 / 50;
-			cout << d << " " << nn << endl << "Sredni czas Prim [us]: " << avg3 << endl;
+			cout << d << " " << nn << endl << "Sredni czas Prim [ns]: " << avg3 << endl;
 			Timefile <<"Gestosc: "<< d << " Wierzcholki: " << nn << endl;
 			Timefile << "Czas: "<< avg1 << endl;
 

@@ -134,7 +134,6 @@ void Algorithms::Prim(int n)
 		v = e.v2;
 	}
 	graf = drzewoPrim;
-    cout<<"Tu dziala"<< endl;
 }
 
 void Algorithms::Kruskal(int n)
