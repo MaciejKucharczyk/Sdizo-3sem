@@ -7,10 +7,10 @@ using namespace std;
 
 Algorithms::Algorithms()
 {
-    MSTree drzewo;
-    MSTree graf;
-    Queue kolejka;
-    DSStruct zbiory;
+    //MSTree drzewoPrim;
+    //MSTree graf;
+    //Queue kolejka;
+    //DSStruct zbior;
 }
 
 Algorithms::~Algorithms()
@@ -25,14 +25,6 @@ void Algorithms::Random_graph_Generator(int density, int nodes)
 	Edge e;
 	TNode* p;
 
-	matrixMST = new int* [nodes]; // utworzenie macierzy 
-	for (int i = 0; i < nodes; i++)
-		matrixMST[i] = new int[nodes];
-	// inicjalizacja macierzy zerami 
-	for (int i = 0; i < nodes; i++)
-		for (int j = 0; j < nodes; j++)
-			matrixMST[i][j] = 0;
-
 	int max_edges = nodes ^ 2;
 	int min_edges = nodes - 1;
 	int edges = max_edges * density / 100;
@@ -42,6 +34,7 @@ void Algorithms::Random_graph_Generator(int density, int nodes)
 		edges = max_edges - 1;
 
 	graf.addNode(nodes);
+    graf.zeros_matrix(nodes);
 	kolejka.addEdges(edges);
 
 	bool* visited = new bool[nodes];
@@ -70,9 +63,10 @@ void Algorithms::Random_graph_Generator(int density, int nodes)
 		e.v2 = v2;
 		weight = rand() & 20; // losujemy wage dla krawedzi
 		e.weight = weight;
+        // dodajemy krawedz do listy i macierzy
 		graf.addEdge(e);
-		matrixMST[e.v1][e.v2] = 1;
-		matrixMST[e.v2][e.v1] = 1;
+        graf.addToMatrix(e.v1, e.v2);
+
 		// dodajemy krawedz do tablicy krawedzi istniejacych
 		visited2d[v1][v1] = true;
 		visited2d[v2][v2] = true;
@@ -96,6 +90,7 @@ void Algorithms::Random_graph_Generator(int density, int nodes)
 			e.v2 = k;
 			e.weight = rand() % 20;
 			graf.addEdge(e);
+            graf.addToMatrix(e.v1, e.v2);
 		}
 }
 
@@ -103,13 +98,13 @@ void Algorithms::Prim(int n)
 {
     Edge e;
 	TNode* p;
+    //***********
+    kolejka.addEdges(n);
 	int v = 0; // rozpatrywany wierzcholek
-	drzewo.addNode(vertex);
+	drzewoPrim.addNode(n);
 	bool* visited = new bool[n];
 
-	for (int i = 0; i < n; i++)
-		for (int j = 0; j < n; j++)
-			matrixMST[i][j] = 0;
+	drzewoPrim.zeros_matrix(n);
 
 	for (int i = 0; i < n; i++)
 		visited[i] = false;       // Inicjujemy tablicę odwiedzin
@@ -131,29 +126,32 @@ void Algorithms::Prim(int n)
 		{
 			e = kolejka.front();            // Pobieramy krawędź z kolejki
 			kolejka.pop();
-		} while (visited[e.v2]); // Krawędź prowadzi poza drzewo?
+		} while (visited[e.v2]); // Krawędź prowadzi poza drzewoPrim?
 
-		drzewo.addEdge(e);             // Dodajemy krawędź do drzewa rozpinającego
-			cout<<"Dziala2"<<endl;
-		matrixMST[e.v1][e.v2] = 1;
-		matrixMST[e.v2][e.v1] = 1;
+		drzewoPrim.addEdge(e);             // Dodajemy krawędź do drzewa rozpinającego
+        drzewoPrim.addToMatrix(e.v1, e.v2);
 		visited[e.v2] = true;     // Oznaczamy drugi wierzchołek jako odwiedzony
 		v = e.v2;
 	}
-	cout<<"Dziala juz prawie"<<endl;
-	graf = drzewo;
+	graf = drzewoPrim;
+    cout<<"Tu dziala"<< endl;
 }
 
 void Algorithms::Kruskal(int n)
 {
-    	Edge e;
+    DSStruct zbior(n);
+    Edge e;
 	for (int i = 0; i < n; i++)
 		zbior.MakeSet(i);       // Dla każdego wierzchołka tworzymy osobny zbiór
-	for (int i = 0; i < n; i++)
+	/*for (int i = 0; i < n; i++)
 	{
 		cin >> e.v1 >> e.v2 >> e.weight; // Odczytujemy kolejne krawędzie grafu
+        cout<<"czy zadziala? "<<endl;
 		kolejka.push(e);          // i umieszczamy je w kolejce priorytetowej
-	}
+        cout<<"TAK!"<<endl;
+	}*/
+    drzewoPrim.addNode(n);
+    drzewoPrim.zeros_matrix(n);
 
 	for (int i = 1; i < n; i++) // Pętla wykonuje się n - 1 razy !!!
 	{
@@ -162,11 +160,13 @@ void Algorithms::Kruskal(int n)
 			e = kolejka.front();      // Pobieramy z kolejki krawędź
 			kolejka.pop();            // Krawędź usuwamy z kolejki
 		} while (zbior.FindSet(e.v1) == zbior.FindSet(e.v2));
-		drzewo.addEdge(e);       // Dodajemy krawędź do drzewa
+		drzewoPrim.addEdge(e);       // Dodajemy krawędź do drzewa
+        drzewoPrim.addToMatrix(e.v1, e.v2);
 		zbior.UnionSets(e);     // Zbiory z wierzchołkami łączymy ze sobą
 	}
-	graf = drzewo;
+	graf = drzewoPrim;
 }
+
 
 void Algorithms::Dijkstra()
 {

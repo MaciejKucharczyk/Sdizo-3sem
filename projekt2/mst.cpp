@@ -44,10 +44,10 @@ MSTree::~MSTree()
                 p = ArrNeighbourList[i];
                 r = p;                     // Zapamietujemy wskazanie
                 p = p->next;             
-                delete r;                  
+                delete r;
             }
         }
-        delete[] ArrNeighbourList;   
+       // delete[] ArrNeighbourList;
     }    
 }
 
@@ -115,9 +115,13 @@ void MSTree::print_list() // wyswietlanie mst listowo
 
 void MSTree::zeros_matrix(int n) // funkcja inicjalizuje macierz zerami
 {
-        for (int i = 0; i < n; i++)
+    matrixMST = new int* [n]; // utworzenie macierzy
+    for (int i = 0; i < n; i++)
+        matrixMST[i] = new int[n];
+
+    for (int i = 0; i < n; i++) // inicjalizacja zerami
         for (int j = 0; j < n; j++)
-            matrixMST[i][j] = 0; 
+            matrixMST[i][j] = 0;
 }
 
 void MSTree::addToMatrix(int e1, int e2)

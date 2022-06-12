@@ -1,6 +1,12 @@
 #pragma once
-#include "zbiory.h"
 #include "mst.h"
+#include "edge.h"
+#include "zbiory.h"
+
+/*struct DSNode
+{
+    int up, rank;
+};*/
 
 class Algorithms
 {
@@ -9,11 +15,13 @@ class Algorithms
         ~Algorithms();
         
         int vertex, edges;
-        MSTree drzewo;
+        MSTree drzewoPrim;
+        MSTree drzewoKruskal;
         MSTree graf;
         Queue kolejka;
-        DSStruct zbior;
+        DSStruct zbior(int n);
         int ** matrixMST;
+        //DSNode *Z;
 
         void Random_graph_Generator(int density, int nodes);
         void Kruskal(int n);

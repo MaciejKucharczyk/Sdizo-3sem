@@ -8,9 +8,10 @@
 #include <thread>
 #include <fstream>
 
-//#include "zbiory.h"
+#include "zbiory.h"
 //#include "mst.h"
-#include "algorithms.cpp"
+//#include "algorithms.cpp"
+#include "algorithms.h"
 
 using namespace std;
 
@@ -19,15 +20,16 @@ string filename;
 bool type;
 
 /*
-MSTree drzewo; // drzewo MST
+MSTree drzewoPrim; // drzewoPrim MST
 Queue kolejka; // kolejka priorytetowa
 MSTree graf; // caly graf z pliku
 DSStruct zbior;
 */
 Algorithms algorytmy;
+//DSNode *Z;
 
 
-void ReadFromFile(string filename /*bool type*/)
+void MSTReadFromFile(string filename /*bool type*/)
 {
 	fstream file;
 	file.open(filename);
@@ -40,15 +42,9 @@ void ReadFromFile(string filename /*bool type*/)
 		file >> edges >> vertex;
 
 		// ***************************
-		//drzewo.addNode(vertex);
 		algorytmy.kolejka.addEdges(edges);           // Kolejka priorytetowa oparta na kopcu
 		algorytmy.graf.addNode(vertex);               // Graf
-		// ***************************
-		/*
-		matrixMST = new int* [vertex]; // utworzenie macierzy 
-		for (int i = 0; i < vertex; i++)
-			matrixMST[i] = new int[vertex];*/
-		// inicjalizacja macierzy zerami 
+
 		algorytmy.graf.zeros_matrix(vertex);
 
 		for (int i = 0; i < edges; i++)
@@ -56,6 +52,7 @@ void ReadFromFile(string filename /*bool type*/)
 
 			file >> e.v1 >> e.v2 >> e.weight; // Odczytujemy kolejne krawędzie grafu
 			algorytmy.graf.addEdge(e);
+            algorytmy.kolejka.push(e);
 			algorytmy.graf.addToMatrix(e.v1, e.v2);
 		}
 
@@ -88,15 +85,15 @@ void mst_menu()
 			// wczytywanie grafu z pliku
 			cout << "Wprowadz nazwe zbioru: " << endl;
 			cin >> filename;
-			ReadFromFile(filename);
+			MSTReadFromFile(filename);
 			break;
 
 		case 2: // generowanie losowego grafu
 			cout << "Wprowadz gestosc grafu w procentach:" << endl;
 			cin >> density;
 			cout << "Wprowadz ilosc wierzcholkow grafu:" << endl;
-			cin >> nodes;
-			algorytmy.Random_graph_Generator(density, nodes);
+			cin >> vertex;
+			algorytmy.Random_graph_Generator(density, vertex);
 			break;
 
 		case 3: // wyswietlanie listowo i macierzowo
@@ -120,7 +117,7 @@ void mst_menu()
 			float avg1 = 0, avg2 = 0, avg3 = 0;
 			cout << "Pomiary:" << endl;
 			int d = 20;
-			int nn = 150;
+			int nn = 10;
 
 			fstream Timefile;
 			string fileTimeName = "Time.csv";
@@ -244,7 +241,7 @@ void menu()
 
 int main()
 {
-	menu();
+    menu();
 	return 0;
 }
 

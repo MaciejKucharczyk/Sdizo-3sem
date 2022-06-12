@@ -12,19 +12,19 @@ DSStruct::DSStruct()
 
 DSStruct::DSStruct(int n)
 {
-    Z = new DSNode[n];    // Tworzymy tablicê dla elementów zbiorów
+    Z = new DSNode[n];    // Tworzymy tablice dla elementow zbiorow
 }
 
 // Destruktor
 //-----------
 DSStruct::~DSStruct()
 {
-    delete[] Z;            // Usuwamy tablicê ze zbiorami
+    delete[] Z;            // Usuwamy tablice ze zbiorami
 }
 
 void DSStruct::addNodes(int n)
 {
-    Z = new DSNode[n];    // Tworzymy tablicê dla elementów zbiorów
+    Z = new DSNode[n];    // Tworzymy tablice dla elementow zbiorow
 }
 
 // Tworzy wpis w tablicy Z
@@ -35,7 +35,7 @@ void DSStruct::MakeSet(int v)
     Z[v].rank = 0;
 }
 
-// Zwraca indeks reprezentanta zbioru, w którym jest wierzcho³ek v
+// Zwraca indeks reprezentanta zbioru, w ktorym jest wierzcholek v
 //----------------------------------------------------------------
 int DSStruct::FindSet(int v)
 {
@@ -43,21 +43,21 @@ int DSStruct::FindSet(int v)
     return Z[v].up;
 }
 
-// £¹czy ze sob¹ zbiory z v i u
+// ï¿½ï¿½czy ze sobï¿½ zbiory z v i u
 //-----------------------------
 void DSStruct::UnionSets(Edge e)
 {
     int ru, rv;
 
-    ru = FindSet(e.v1);   // Wyznaczamy korzeñ drzewa z wêz³em u
-    rv = FindSet(e.v2);   // Wyznaczamy korzeñ drzewa z wêz³em v
-    if (ru != rv)           // Korzenie musz¹ byæ ró¿ne
+    ru = FindSet(e.v1);   // Wyznaczamy korzen drzewa z wezlem u
+    rv = FindSet(e.v2);   // Wyznaczamy korzen drzewa z wezlem v
+    if (ru != rv)           // Korzenie musza byc rozne
     {
-        if (Z[ru].rank > Z[rv].rank) // Porównujemy rangi drzew
-            Z[rv].up = ru;    // ru wiêksze, do³¹czamy rv
+        if (Z[ru].rank > Z[rv].rank) // Porownujemy rangi drzew
+            Z[rv].up = ru;    // ru wieksze, dolaczamy rv
         else
         {
-            Z[ru].up = rv;    // równe lub rv wiêksze, do³¹czamy ru
+            Z[ru].up = rv;    // rowne lub rv wieksze, dolaczamy ru
             if (Z[ru].rank == Z[rv].rank) Z[rv].rank++;
         }
     }

@@ -10,7 +10,7 @@ Queue::Queue()
 
 Queue::Queue(int n)
 {
-    Heap = new Edge[n];         // Tworzymy tablicê
+    Heap = new Edge[n];         // Tworzymy tablice
     h_index = 0;
 }
 
@@ -21,7 +21,7 @@ Queue::~Queue()
 
 void Queue::addEdges(int n)
 {
-    Heap = new Edge[n];         // Tworzymy tablicê
+    Heap = new Edge[n];         // Tworzymy tablice
     h_index = 0;
 }
 
@@ -36,7 +36,7 @@ void Queue::push(Edge e)
     int i, j;
 
     i = h_index++;                    // i ustawiamy na koniec kopca
-    j = (i - 1) >> 1;            // Obliczamy pozycjê rodzica
+    j = (i - 1) >> 1;            // Obliczamy pozycje rodzica
 
     // Szukamy miejsca w kopcu dla krawedzi
 
@@ -47,7 +47,7 @@ void Queue::push(Edge e)
         j = (i - 1) >> 1;
     }
 
-    Heap[i] = e;                // KrawêdŸ wstawiamy do kopca
+    Heap[i] = e;                // Krawï¿½dï¿½ wstawiamy do kopca
 }
 
 

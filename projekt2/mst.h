@@ -9,8 +9,8 @@ private:
     TNode** ArrNeighbourList;                  // Tablica list sasiedztwa
     int ArrSize;                    // Liczba komorek w tablicy
     int TreeWeight;                  // Waga calego drzewa
-    int **matrixMST;                // macierz sasiedztwa
 public:
+    int **matrixMST;                // macierz sasiedztwa
     MSTree(int n);
     MSTree();
     ~MSTree();

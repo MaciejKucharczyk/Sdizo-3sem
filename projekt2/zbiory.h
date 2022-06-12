@@ -8,9 +8,8 @@ struct DSNode
 
 class DSStruct
 {
-private:
-    DSNode* Z;
 public:
+    DSNode* Z;
     DSStruct(int n);
     DSStruct();
     ~DSStruct();
