@@ -117,7 +117,7 @@ void mst_menu()
 			float avg1 = 0, avg2 = 0, avg3 = 0;
 			cout << "Pomiary:" << endl;
 			int d = 20;
-			int nn = 10;
+			int nn = 1000;
 
 			fstream Timefile;
 			string fileTimeName = "Time.csv";
