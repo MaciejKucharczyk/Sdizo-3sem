@@ -25,15 +25,16 @@ void Algorithms::Random_graph_Generator(int density, int nodes)
 	Edge e;
 	TNode* p;
 
-	int max_edges = nodes ^ 2;
+	//int max_edges = nodes ^ 2;
+    int max_edges = ((nodes*(nodes-1))/2);
 	int min_edges = nodes - 1;
 	int edges = max_edges * density / 100;
+    edges = edges + min_edges;
 	int v1 = 0, v2, weight;
-
 	if (density == 99)
 		edges = max_edges - 1;
 
-	graf.addNode(nodes);
+    graf.addNode(nodes);
     graf.zeros_matrix(nodes);
 	kolejka.addEdges(edges);
 
@@ -75,23 +76,35 @@ void Algorithms::Random_graph_Generator(int density, int nodes)
 		v1++;
 	}
 
+    int k = nodes-1;
 	if (min_edges < edges)
 
-		for (int i = min_edges; i <= edges; i++) // dodajemy brakujace krawedzie 
+		for (int i = min_edges; i < edges; i++) // dodajemy brakujace krawedzie
 		{
-			int k;
-			int j = 0;
-			do
+            int j;
+            int nodesLeft = k;
+            do
 			{
-				k = rand() % min_edges;
-			} while (visited2d[j][k]); // losuj wierzcholek, dopoki krawedz o danych dwoch wierzcholkach nie isntieje
+				if(nodesLeft==0)
+                {
+                    k--;
+                    nodesLeft=k;
+                }
+                j = rand() % min_edges;
+                nodesLeft--;
+			} while (visited2d[k][j]); // losuj wierzcholek, dopoki krawedz o danych dwoch wierzcholkach nie isntieje
 
-			e.v1 = j;
-			e.v2 = k;
+			e.v1 = k;
+			e.v2 = j;
 			e.weight = rand() % 20;
 			graf.addEdge(e);
             graf.addToMatrix(e.v1, e.v2);
+            visited2d[k][j]= true;
+            visited2d[j][k]= true; // oznaczamy krawedzie, ktore istnieja jako true
+            if(k == 0) // na wypadek, gdyby k uroslo za duze (seg fault)
+                break;
 		}
+    //visited2d = nullptr;
 }
 
 void Algorithms::Prim(int n)
