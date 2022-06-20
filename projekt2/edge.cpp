@@ -76,3 +76,18 @@ void Queue::pop() // usuwa korzen z kopca
     }
 }
 
+Edge Queue::find(int v1, int v2)
+{
+    for(int i=0; i<h_index; i++)
+    {
+        if(Heap[i].v1 == v1 )
+        {
+            if(Heap[i].v2 == v2)
+                return Heap[i];
+        }
+        else
+            continue;
+    }
+    cout << "Blad, nie znaleziono krawedzi " << endl;
+}
+

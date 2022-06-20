@@ -15,7 +15,7 @@
 
 using namespace std;
 
-int edges, vertex;
+int edges, vertex, startVertex;
 string filename;
 bool type;
 
@@ -59,6 +59,82 @@ void MSTReadFromFile(string filename /*bool type*/)
 		file.close();
 	}
 	else cout << "Error opening file!!!" << endl;
+}
+
+void DirectReadFromFile(string filename /*bool type*/)
+{
+    /*fstream file;
+    file.open(filename);
+
+    if (file.good() == true)
+    {
+        Edge e;
+        TNode* p;
+        file >> edges >> vertex >> startVertex;
+
+        // ***************************
+        algorytmy.kolejka.addEdges(edges);           // Kolejka priorytetowa oparta na kopcu
+        algorytmy.graf.addNode(vertex);               // Graf
+
+        algorytmy.graf.zeros_matrix(vertex);
+
+        for (int i = 0; i < edges; i++)
+        {
+
+            file >> e.v1 >> e.v2 >> e.weight; // Odczytujemy kolejne krawędzie grafu
+
+            algorytmy.graf.addDirectEdge(e);
+            algorytmy.kolejka.push(e);
+            algorytmy.graf.addToMatrix(e.v1, e.v2);
+        }
+
+        file.close();
+    }
+    else cout << "Error opening file!!!" << endl;*/
+
+    fstream file;
+    file.open(filename);
+
+    if (file.good() == true)
+    {
+        Edge e;
+        TNode *p = new TNode;
+        TNode *u = new TNode;
+        //*****************
+        //algorytmy.kolejkaP.addNodes(vertex);
+        //*****************
+        file >> edges >> vertex >> startVertex;
+
+        // ***************************
+        algorytmy.kolejka.addEdges(edges);           // Kolejka priorytetowa oparta na kopcu
+        algorytmy.grafDirect.addNode(vertex);               // Graf
+
+        algorytmy.grafDirect.zeros_matrix(vertex);
+
+        for (int i = 0; i < edges; i++)
+        {
+            file >> e.v1 >> e.v2 >> e.weight; // Odczytujemy kolejne krawędzie grafu
+
+            algorytmy.grafDirect.addDirectEdge(e, e.v1);
+            algorytmy.kolejka.push(e);
+            algorytmy.grafDirect.addToMatrix(e.v1, e.v2);
+            //*********************************
+            p->v=e.v1;
+            if(p->v == u->v)
+            {
+                algorytmy.grafDirect.addToNodeList(p, p->v); // do sprawdzenia, co sie przesyla do funkcji
+                u->v = e.v1;
+            }
+            //*********************************
+            //p->v=e.v1;
+            //p->weight = e.weight;
+            //p->next = u;
+            //u->v=e.v2;
+        }
+
+        file.close();
+    }
+    else cout << "Error opening file!!!" << endl;
 }
 
 void mst_menu()
@@ -183,29 +259,40 @@ void shortest_way_menu()
 {
 	int opt = 0;
 
-	cout << "===== MENU =====" << endl;
-	cout << "1. Wczytaj z pliku" << endl;
-	cout << "2. Wygeneruj graf losowo" << endl;
-	cout << "3. Wyswietl listowo i macierzowo" << endl;
-	cout << "4. Algorytm Dijkstry " << endl;
-	cout << "0. Cofnij do menu " << endl;
-
 	do
 	{
+        cout << "===== MENU =====" << endl;
+        cout << "1. Wczytaj z pliku" << endl;
+        cout << "2. Wygeneruj graf losowo" << endl;
+        cout << "3. Wyswietl listowo i macierzowo" << endl;
+        cout << "4. Algorytm Dijkstry " << endl;
+        cout << "5. Pomiary " << endl;
+        cout << "0. Cofnij do menu " << endl;
+        cin >> opt;
 		switch (opt)
 		{
-		case 1:
-			break;
+        case 1: // wczytywanie z pliku
+            cout << "Wprowadz nazwe zbioru: " << endl;
+            cin >> filename;
+            DirectReadFromFile(filename);
+            break;
 
-		case 2:
-			break;
+        case 2: // losowy graf
+            break;
 
-		case 3:
-			break;
+        case 3: // wyswietl listowo/macierzowo
+            cout << "Wyswietlenie listowo:" << endl;
+            algorytmy.grafDirect.print_list();
+            cout << endl << "Wyswietlanie macierzowo: " << endl;
+            algorytmy.grafDirect.print_matrix(vertex);
+            break;
 
-		case 4:
-			break;
+        case 4: // Dijkstra
+            algorytmy.Dijkstra_and_print(vertex, startVertex);
+            break;
 
+        case 5: // pomiary
+            break;
 		}
 
 	} while (opt != 0);

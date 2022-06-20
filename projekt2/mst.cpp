@@ -7,10 +7,8 @@ using namespace std;
 
 MSTree::MSTree(int n)
 {
-    int i;
-
     ArrNeighbourList = new TNode * [n];         // lista sasiedztwa 
-    for (i = 0; i < n; i++) ArrNeighbourList[i] = NULL;
+    for (int i = 0; i < n; i++) ArrNeighbourList[i] = nullptr;
     ArrSize = n - 1;                  // dlugpsctablicy
     TreeWeight = 0;                    // waga calego drzewa
     matrixMST = new int* [n];          // utworzenie macierzy 
@@ -70,10 +68,23 @@ void MSTree::addEdge(Edge e)
     ArrNeighbourList[e.v2] = p;
 }
 
+void MSTree::addDirectEdge(Edge e)
+{
+    TNode* p;
+
+    TreeWeight += e.weight;            // Do wagi drzewa dodajemy wage krawedzi
+    p = new TNode;                 // nowy wierzcholek
+    p->v = e.v2;                   //
+    p->weight = e.weight;
+    p->next = ArrNeighbourList[e.v1];          // Dodajemy p do listy wierzcholka v1
+    ArrNeighbourList[e.v1] = p;
+}
+
 void MSTree::addNode(int n) // uzupelnienie konstruktora bezargumentowego
 {
     ArrNeighbourList = new TNode * [n];                        
-    for (int i = 0; i < n; i++) ArrNeighbourList[i] = NULL;     
+    for (int i = 0; i < n; i++)
+        ArrNeighbourList[i] = nullptr;
     ArrSize = n - 1;                                 
     TreeWeight = 0;                               
 }
@@ -106,7 +117,23 @@ void MSTree::print_list() // wyswietlanie mst listowo
     for (i = 0; i <= ArrSize; i++)
     {
         cout << "Vertex " << i << " - ";
-        if (ArrNeighbourList[i] != NULL)
+        if (ArrNeighbourList[i] != nullptr)
+            for (p = ArrNeighbourList[i]; p; p = p->next) cout << p->v << "->(" << p->weight << ")  ";
+        cout << endl;
+    }
+    cout << endl << endl << "Waga drzewa spinajacego = " << TreeWeight << endl << endl;
+}
+
+void MSTree::Dijkstra_print_list() // wyswietlanie mst listowo
+{
+    int i;
+    TNode* p;
+
+    cout << endl << "vertex     | index ->(weight) |" << endl << endl;
+    for (i = 0; i <= ArrSize; i++)
+    {
+        cout << "Vertex " << i << " - ";
+        if (ArrNeighbourList[i] != nullptr)
             for (p = ArrNeighbourList[i]; p; p = p->next) cout << p->v << "->(" << p->weight << ")  ";
         cout << endl;
     }

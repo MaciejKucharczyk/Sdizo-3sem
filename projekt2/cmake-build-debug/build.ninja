@@ -79,6 +79,18 @@ build CMakeFiles/projekt2.dir/mst.cpp.obj: CXX_COMPILER__projekt2_Debug C$:/User
   OBJECT_DIR = CMakeFiles\projekt2.dir
   OBJECT_FILE_DIR = CMakeFiles\projekt2.dir
 
+build CMakeFiles/projekt2.dir/node.cpp.obj: CXX_COMPILER__projekt2_Debug C$:/Users/Maciej/Pulpit/sdizo$ -$ gotowe/struktury-danych/projekt2/node.cpp || cmake_object_order_depends_target_projekt2
+  DEP_FILE = CMakeFiles\projekt2.dir\node.cpp.obj.d
+  FLAGS = -g -std=gnu++14
+  OBJECT_DIR = CMakeFiles\projekt2.dir
+  OBJECT_FILE_DIR = CMakeFiles\projekt2.dir
+
+build CMakeFiles/projekt2.dir/shortway.cpp.obj: CXX_COMPILER__projekt2_Debug C$:/Users/Maciej/Pulpit/sdizo$ -$ gotowe/struktury-danych/projekt2/shortway.cpp || cmake_object_order_depends_target_projekt2
+  DEP_FILE = CMakeFiles\projekt2.dir\shortway.cpp.obj.d
+  FLAGS = -g -std=gnu++14
+  OBJECT_DIR = CMakeFiles\projekt2.dir
+  OBJECT_FILE_DIR = CMakeFiles\projekt2.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target projekt2
@@ -87,7 +99,7 @@ build CMakeFiles/projekt2.dir/mst.cpp.obj: CXX_COMPILER__projekt2_Debug C$:/User
 #############################################
 # Link the executable projekt2.exe
 
-build projekt2.exe: CXX_EXECUTABLE_LINKER__projekt2_Debug CMakeFiles/projekt2.dir/main.cpp.obj CMakeFiles/projekt2.dir/edge.cpp.obj CMakeFiles/projekt2.dir/zbiory.cpp.obj CMakeFiles/projekt2.dir/algorithms.cpp.obj CMakeFiles/projekt2.dir/mst.cpp.obj
+build projekt2.exe: CXX_EXECUTABLE_LINKER__projekt2_Debug CMakeFiles/projekt2.dir/main.cpp.obj CMakeFiles/projekt2.dir/edge.cpp.obj CMakeFiles/projekt2.dir/zbiory.cpp.obj CMakeFiles/projekt2.dir/algorithms.cpp.obj CMakeFiles/projekt2.dir/mst.cpp.obj CMakeFiles/projekt2.dir/node.cpp.obj CMakeFiles/projekt2.dir/shortway.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\projekt2.dir

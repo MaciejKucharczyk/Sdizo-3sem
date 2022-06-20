@@ -180,7 +180,102 @@ void Algorithms::Kruskal(int n)
 }
 
 
-void Algorithms::Dijkstra()
+void Algorithms::Dijkstra_and_print(int n, int start)
 {
-    
+    int *S = new int [ n ];          // Stos
+    int sptr = 0;                   // Wskaźnik stosu
+
+
+    TNode* p = new TNode;
+    int d[n]; // droga od w. startowego do wierzcholka v
+    int prev[n]; // poprzednik wierzcholka v
+    for (int i=0; i<n; i++)
+    {
+        d[i]=INT16_MAX;
+        prev[i]= -1;
+    }
+    d[start]=0; // odleglosc wierzcholka startowego
+    NodeQueue kolejkaP(n); // kolejka priorytetowa wierzcholkow
+    for (int i=0; i<n; i++) // dodajemy wierzcholki do kolejki
+    {
+        p=grafDirect.getFromNodeList(i);
+        /*if (ArrNeighbourList[i] != nullptr)
+            for (p = ArrNeighbourList[i]; p; p = p->next) cout << p->v << "->(" << p->weight << ")  ";*/
+        p->distance=d[p->v];
+        kolejkaP.push(p);
+    }
+    while(kolejkaP.HeapIndex()>0)
+    {
+        TNode* tab; // tablica list sasiedztwa dla danego wierzcholka
+        TNode* nn; // badany wierzcholek
+        nn = kolejkaP.front();
+        kolejkaP.pop();
+       // tab = graf.getAList(nn->v);
+       for(tab = grafDirect.getAList(nn->v); tab; tab = tab -> next)
+       {
+           if(d[tab->v] > d[nn->v] + tab->weight)
+           {
+               d[tab->v] = d[nn->v] + tab->weight;
+               prev[tab->v] = nn->v;
+           }
+       }
+    }
+
+    // WYSWIETLANIE
+    for(int i = 0; i < n; i++ )
+    {
+        cout << i << ": ";
+
+        // Ścieżkę przechodzimy od końca ku początkowi,
+        // Zapisując na stosie kolejne wierzchołki
+
+        for(int  j = i; j > -1; j = prev [ j ] ) S [ sptr++ ] = j;
+
+        // Wyświetlamy ścieżkę, pobierając wierzchołki ze stosu
+
+        while( sptr ) cout << S [ --sptr ] << " ";
+
+        // Na końcu ścieżki wypisujemy jej koszt
+
+        cout << "$" << d [ i ] << endl;
+    }
 }
+
+void Algorithms::Dijkstra(int n, int start)
+{
+    int *S = new int[n];          // Stos
+    int sptr = 0;                   // Wskaźnik stosu
+
+
+    TNode *p = new TNode;
+    int d[n]; // droga od w. startowego do wierzcholka v
+    int prev[n]; // poprzednik wierzcholka v
+    for (int i = 0; i < n; i++) {
+        d[i] = INT16_MAX;
+        prev[i] = -1;
+    }
+    d[start] = 0; // odleglosc wierzcholka startowego
+    NodeQueue kolejkaP(n); // kolejka priorytetowa wierzcholkow
+    for (int i = 0; i < n; i++) // dodajemy wierzcholki do kolejki
+    {
+        p = grafDirect.getFromNodeList(i);
+        /*if (ArrNeighbourList[i] != nullptr)
+            for (p = ArrNeighbourList[i]; p; p = p->next) cout << p->v << "->(" << p->weight << ")  ";*/
+        p->distance = d[p->v];
+        kolejkaP.push(p);
+    }
+    while (kolejkaP.HeapIndex() > 0) {
+        TNode *tab; // tablica list sasiedztwa dla danego wierzcholka
+        TNode *nn; // badany wierzcholek
+        nn = kolejkaP.front();
+        kolejkaP.pop();
+        // tab = graf.getAList(nn->v);
+        for (tab = grafDirect.getAList(nn->v); tab; tab = tab->next) {
+            if (d[tab->v] > d[nn->v] + tab->weight) {
+                d[tab->v] = d[nn->v] + tab->weight;
+                prev[tab->v] = nn->v;
+            }
+        }
+    }
+}
+
