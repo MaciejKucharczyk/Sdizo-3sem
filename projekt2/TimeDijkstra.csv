@@ -1,0 +1,63 @@
+
+Pomiary Dijkstra
+
+Gestosc: 20 Wierzcholki: 10
+Czas: 707.6
+Gestosc: 60 Wierzcholki: 10
+Czas: 797.98
+Gestosc: 99 Wierzcholki: 10
+Czas: 707.6
+
+Pomiary Dijkstra
+
+Gestosc: 20 Wierzcholki: 20
+Czas: 1499.02
+Gestosc: 60 Wierzcholki: 20
+Czas: 1864.12
+Gestosc: 99 Wierzcholki: 20
+Czas: 1499.02
+
+Pomiary Dijkstra
+
+Gestosc: 20 Wierzcholki: 50
+Czas: 3917.2
+Gestosc: 60 Wierzcholki: 50
+Czas: 4534.68
+Gestosc: 99 Wierzcholki: 50
+Czas: 3917.2
+
+Pomiary Dijkstra
+
+Gestosc: 20 Wierzcholki: 100
+Czas: 11411.3
+Gestosc: 60 Wierzcholki: 100
+Czas: 28203.3
+Gestosc: 99 Wierzcholki: 100
+Czas: 11411.3
+
+Pomiary Dijkstra
+
+Gestosc: 20 Wierzcholki: 200
+Czas: 64320.9
+Gestosc: 60 Wierzcholki: 200
+Czas: 81703.6
+Gestosc: 99 Wierzcholki: 200
+Czas: 64320.9
+
+Pomiary Dijkstra
+
+Gestosc: 20 Wierzcholki: 500
+Czas: 246023
+Gestosc: 60 Wierzcholki: 500
+Czas: 398529
+Gestosc: 99 Wierzcholki: 500
+Czas: 246023
+
+Pomiary Dijkstra
+
+Gestosc: 20 Wierzcholki: 1000
+Czas: 897793
+Gestosc: 60 Wierzcholki: 1000
+Czas: 1.74913e+06
+Gestosc: 99 Wierzcholki: 1000
+Czas: 897793

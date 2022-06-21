@@ -151,7 +151,7 @@ void Algorithms::Random_Directgraph_Generator(int density, int nodes)
             v2 = rand() % nodes; // losowanie koncowego wierzcholka
         } while (visited[v2]);
         e.v2 = v2;
-        weight = rand() & 20; // losujemy wage dla krawedzi
+        weight = rand() % 20 +1; // losujemy wage dla krawedzi
         e.weight = weight;
         // dodajemy krawedz do listy i macierzy
         grafDirect.addDirectEdge(e, e.v1);
