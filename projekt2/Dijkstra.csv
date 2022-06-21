@@ -1,0 +1,63 @@
+
+Pomiary Dijkstra
+
+Gestosc: 20 Wierzcholki: 1000
+838437
+Gestosc: 60 Wierzcholki: 1000
+1.73944e+06
+Gestosc: 99 Wierzcholki: 1000
+1.32567e+06
+
+Pomiary Dijkstra
+
+Gestosc: 20 Wierzcholki: 500
+199363
+Gestosc: 60 Wierzcholki: 500
+314360
+Gestosc: 99 Wierzcholki: 500
+296045
+
+Pomiary Dijkstra
+
+Gestosc: 20 Wierzcholki: 200
+35266.9
+Gestosc: 60 Wierzcholki: 200
+63699.8
+Gestosc: 99 Wierzcholki: 200
+53247.3
+
+Pomiary Dijkstra
+
+Gestosc: 20 Wierzcholki: 100
+11710.4
+Gestosc: 60 Wierzcholki: 100
+18218.7
+Gestosc: 99 Wierzcholki: 100
+14312
+
+Pomiary Dijkstra
+
+Gestosc: 20 Wierzcholki: 50
+3829.24
+Gestosc: 60 Wierzcholki: 50
+5304.3
+Gestosc: 99 Wierzcholki: 50
+5377.16
+
+Pomiary Dijkstra
+
+Gestosc: 20 Wierzcholki: 20
+1494.04
+Gestosc: 60 Wierzcholki: 20
+1338
+Gestosc: 99 Wierzcholki: 20
+1492.56
+
+Pomiary Dijkstra
+
+Gestosc: 20 Wierzcholki: 10
+449.72
+Gestosc: 60 Wierzcholki: 10
+455.12
+Gestosc: 99 Wierzcholki: 10
+477.6

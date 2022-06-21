@@ -193,10 +193,10 @@ void mst_menu()
 			float avg1 = 0, avg2 = 0, avg3 = 0;
 			cout << "Pomiary:" << endl;
 			int d = 20;
-			int nn = 1000;
+			int nn = 10;
 
 			fstream Timefile;
-			string fileTimeName = "Time.csv";
+			string fileTimeName = "Kruskal.csv";
 			Timefile.open(fileTimeName, ios::out | ios::app);
 			Timefile << endl << "Pomiary Prim" << endl;
 
@@ -205,7 +205,8 @@ void mst_menu()
 				algorytmy.Random_graph_Generator(d, nn);
 
 				auto t1 = std::chrono::high_resolution_clock::now(); // czas start
-				algorytmy.Prim(nn);
+				//algorytmy.Prim(nn);
+                algorytmy.Kruskal(nn);
 				
 				auto t2 = std::chrono::high_resolution_clock::now();
 				avg1 += std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1).count();
@@ -222,7 +223,8 @@ void mst_menu()
 				algorytmy.Random_graph_Generator(d, nn);
 				
 				auto t1 = std::chrono::high_resolution_clock::now(); // czas start
-				algorytmy.Prim(nn);
+				//algorytmy.Prim(nn);
+                algorytmy.Kruskal(nn);
 				
 				auto t2 = std::chrono::high_resolution_clock::now();
 				avg2 += std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1).count();
@@ -239,7 +241,8 @@ void mst_menu()
 				algorytmy.Random_graph_Generator(d, nn);
 				//start = read_QPC(); // poczatek pomiaru
 				auto t1 = std::chrono::high_resolution_clock::now(); // czas start
-				algorytmy.Prim(nn);
+				//algorytmy.Prim(nn);
+                algorytmy.Kruskal(nn);
 				//elapsed = read_QPC() - start; // koniec pomiaru
 				auto t2 = std::chrono::high_resolution_clock::now();
 				avg3 += std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1).count();
@@ -247,7 +250,7 @@ void mst_menu()
 			avg3 = avg3 / 50;
 			cout << d << " " << nn << endl << "Sredni czas Prim [ns]: " << avg3 << endl;
 			Timefile <<"Gestosc: "<< d << " Wierzcholki: " << nn << endl;
-			Timefile << "Czas: "<< avg1 << endl;
+			Timefile << "Czas: "<< avg3 << endl;
 
 			break;
 		}
@@ -302,10 +305,10 @@ void shortest_way_menu()
             float avg1 = 0, avg2 = 0, avg3 = 0;
             cout << "Pomiary:" << endl;
             int d = 20;
-            int nn = 1000;
+            int nn = 10;
 
             fstream Timefile;
-            string fileTimeName = "TimeDijkstra.csv";
+            string fileTimeName = "Dijkstra.csv";
             Timefile.open(fileTimeName, ios::out | ios::app);
             Timefile << endl << "Pomiary Dijkstra" << endl;
 
@@ -322,7 +325,7 @@ void shortest_way_menu()
             avg1 = avg1 / 50;
             cout << d << " " << nn << endl << "Sredni czas Dijkstra [ns]: " << avg1 << endl;
             Timefile << endl << "Gestosc: "<< d << " Wierzcholki: " << nn << endl;
-            Timefile << "Czas: "<<avg1<<endl;
+            Timefile <<avg1<<endl;
 
             d = 60;
             avg2 = 0;
@@ -339,7 +342,7 @@ void shortest_way_menu()
             avg2 = avg2 / 50;
             cout << d << " " << nn << endl << "Sredni czas Dijkstra [ns]: " << avg2 << endl;
             Timefile <<"Gestosc: "<< d << " Wierzcholki: " << nn << endl;
-            Timefile << "Czas: "<< avg2 << endl;
+            Timefile << avg2 << endl;
 
             d = 99;
             avg3 = 0;
@@ -356,7 +359,7 @@ void shortest_way_menu()
             avg3 = avg3 / 50;
             cout << d << " " << nn << endl << "Sredni czas Dijkstra [ns]: " << avg3 << endl;
             Timefile <<"Gestosc: "<< d << " Wierzcholki: " << nn << endl;
-            Timefile << "Czas: "<< avg1 << endl;
+            Timefile << avg3 << endl;
             break;
 		}
 

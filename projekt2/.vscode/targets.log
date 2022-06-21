@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Tue Jun 21 14:56:44 2022
+# Make data base, printed on Tue Jun 21 15:54:00 2022
 
 # Variables
 
@@ -19,7 +19,7 @@ LC_ALL = C
 # environment
 NO_AT_BRIDGE = 1
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-5314759a-a5e4-4b19-9705-0fcfb0b5572d.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-b10dabae-0b86-4061-a046-0f8bb2db287b.sock
 # environment
 LC_NUMERIC = pl_PL.UTF-8
 # environment
@@ -51,7 +51,7 @@ MAIL = /var/spool/mail/maciej
 # environment
 XDG_DATA_DIRS = /home/maciej/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share/:/usr/share/
 # environment
-OLDPWD = /home/maciej/sdizo2/struktury-danych
+OLDPWD = /home/maciej
 # automatic
 ^D = $(patsubst %/,%,$(dir $^))
 # environment
@@ -63,7 +63,7 @@ VSCODE_CODE_CACHE_PATH = /home/maciej/.config/Code/CachedData/4af164ea3a06f701fe
 # environment
 LANG = C
 # environment
-XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.6JO9N1
+XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.3HKJO1
 # default
 .LOADED := 
 # default
@@ -103,13 +103,13 @@ MAKEFILE_LIST := makefile
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 3175
+VSCODE_PID = 2560
 # environment
 XDG_SESSION_TYPE = wayland
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # environment
-SESSION_MANAGER = local/unix:@/tmp/.ICE-unix/1783,unix/unix:/tmp/.ICE-unix/1783
+SESSION_MANAGER = local/unix:@/tmp/.ICE-unix/1684,unix/unix:/tmp/.ICE-unix/1684
 # automatic
 *F = $(notdir $*)
 # environment
@@ -131,7 +131,7 @@ XMODIFIERS = @im=ibus
 # environment
 SHLVL = 2
 # environment
-GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/b8fc1afb_f8e7_4b38_acca_304fb1a440ab
+GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/e612417c_d718_4258_989c_b12f1e0a2522
 # environment
 MAKELEVEL := 0
 # default
@@ -173,7 +173,7 @@ LOGNAME = maciej
 # makefile
 .DEFAULT_GOAL := main
 # environment
-SYSTEMD_EXEC_PID = 2144
+SYSTEMD_EXEC_PID = 1719
 # environment
 HISTCONTROL = ignoredups
 # environment
@@ -239,9 +239,9 @@ GDMSESSION = gnome
 
 # Directories
 
-# . (device 41, inode 93624): 27 files, no impossibilities.
+# . (device 41, inode 93624): 30 files, no impossibilities.
 
-# 27 files, no impossibilities in 1 directories.
+# 30 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -282,7 +282,6 @@ node.cpp:
 # Not a target:
 all:
 #  Command line target.
- 
 #  Implicit rule search has been done.
 #  File does not exist.
 #  File has not been updated.
@@ -306,6 +305,7 @@ makefile:
 #  Last modified 2022-06-21 14:56:27.126682259
 #  File has been updated.
 #  Successfully updated.
+ 
 
 # Not a target:
 shortway.cpp:
@@ -327,12 +327,12 @@ zbiory.cpp:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 33 / storage = 349 B / avg = 10 B
-# current buf: size = 8162 B / used = 349 B / count = 33 / avg = 10 B
+# strcache buffers: 1 (0) / strings = 36 / storage = 391 B / avg = 10 B
+# current buf: size = 8162 B / used = 391 B / count = 36 / avg = 10 B
 
-# strcache performance: lookups = 45 / hit rate = 26%
+# strcache performance: lookups = 48 / hit rate = 25%
 # hash-table stats:
-# Load=33/8192=0%, Rehash=0, Collisions=0/45=0%
-# Finished Make data base on Tue Jun 21 14:56:44 2022
+# Load=36/8192=0%, Rehash=0, Collisions=0/48=0%
+# Finished Make data base on Tue Jun 21 15:54:00 2022
 
  
