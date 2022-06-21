@@ -258,6 +258,8 @@ void mst_menu()
 void shortest_way_menu()
 {
 	int opt = 0;
+    int density;
+    int startV=rand()%10;
 
 	do
 	{
@@ -278,6 +280,11 @@ void shortest_way_menu()
             break;
 
         case 2: // losowy graf
+            cout << "Wprowadz gestosc grafu w procentach:" << endl;
+            cin >> density;
+            cout << "Wprowadz ilosc wierzcholkow grafu:" << endl;
+            cin >> vertex;
+            algorytmy.Random_Directgraph_Generator(density, vertex);
             break;
 
         case 3: // wyswietl listowo/macierzowo
@@ -292,6 +299,64 @@ void shortest_way_menu()
             break;
 
         case 5: // pomiary
+            float avg1 = 0, avg2 = 0, avg3 = 0;
+            cout << "Pomiary:" << endl;
+            int d = 20;
+            int nn = 1000;
+
+            fstream Timefile;
+            string fileTimeName = "TimeDijkstra.csv";
+            Timefile.open(fileTimeName, ios::out | ios::app);
+            Timefile << endl << "Pomiary Dijkstra" << endl;
+
+            for (int i = 0; i < 50; i++)
+            {
+                algorytmy.Random_Directgraph_Generator(d, nn);
+
+                auto t1 = std::chrono::high_resolution_clock::now(); // czas start
+                algorytmy.Dijkstra(nn, startV);
+
+                auto t2 = std::chrono::high_resolution_clock::now();
+                avg1 += std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1).count();
+            }
+            avg1 = avg1 / 50;
+            cout << d << " " << nn << endl << "Sredni czas Dijkstra [ns]: " << avg1 << endl;
+            Timefile << endl << "Gestosc: "<< d << " Wierzcholki: " << nn << endl;
+            Timefile << "Czas: "<<avg1<<endl;
+
+            d = 60;
+            avg2 = 0;
+            for (int i = 0; i < 50; i++)
+            {
+                algorytmy.Random_Directgraph_Generator(d, nn);
+
+                auto t1 = std::chrono::high_resolution_clock::now(); // czas start
+                algorytmy.Dijkstra(nn, startV);
+
+                auto t2 = std::chrono::high_resolution_clock::now();
+                avg2 += std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1).count();
+            }
+            avg2 = avg2 / 50;
+            cout << d << " " << nn << endl << "Sredni czas Dijkstra [ns]: " << avg2 << endl;
+            Timefile <<"Gestosc: "<< d << " Wierzcholki: " << nn << endl;
+            Timefile << "Czas: "<< avg2 << endl;
+
+            d = 99;
+            avg3 = 0;
+            for (int i = 0; i < 50; i++)
+            {
+                algorytmy.Random_Directgraph_Generator(d, nn);
+                //start = read_QPC(); // poczatek pomiaru
+                auto t1 = std::chrono::high_resolution_clock::now(); // czas start
+                algorytmy.Dijkstra(nn, startV);
+                //elapsed = read_QPC() - start; // koniec pomiaru
+                auto t2 = std::chrono::high_resolution_clock::now();
+                avg3 += std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1).count();
+            }
+            avg3 = avg3 / 50;
+            cout << d << " " << nn << endl << "Sredni czas Dijkstra [ns]: " << avg3 << endl;
+            Timefile <<"Gestosc: "<< d << " Wierzcholki: " << nn << endl;
+            Timefile << "Czas: "<< avg1 << endl;
             break;
 		}
 

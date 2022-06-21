@@ -137,7 +137,7 @@ void Tree::zeros_matrix(int n) // funkcja inicjalizuje macierz zerami
 void Tree::addToMatrix(int e1, int e2)
 {
     matrix[e1][e2] = 1;
-    //matrixMST[e2][e1] = 1;
+    matrix[e2][e1] = -1;
 }
 
 void Tree::print_matrix(int vertex)

@@ -107,6 +107,96 @@ void Algorithms::Random_graph_Generator(int density, int nodes)
     //visited2d = nullptr;
 }
 
+void Algorithms::Random_Directgraph_Generator(int density, int nodes)
+{
+    srand(time(NULL));
+
+    Edge e;
+    TNode* p;
+
+    //int max_edges = nodes ^ 2;
+    int max_edges = ((nodes*(nodes-1))/2);
+    int min_edges = nodes - 1;
+    int edges = max_edges * density / 100;
+    edges = edges + min_edges;
+    int v1 = 0, v2, weight;
+    if (density == 99)
+        edges = max_edges - 1;
+
+    grafDirect.addNode(nodes);
+    grafDirect.zeros_matrix(nodes);
+    kolejka.addEdges(edges);
+
+    bool* visited = new bool[nodes];
+    bool** visited2d = new bool* [nodes]; // tablica dwuwymiarowa zawierajaca informacje o tym,
+    // czy krawedz pomiedzy dwoma danymi wierzcholkami istnieje
+    for (int i = 0; i < nodes; ++i)
+        visited2d[i] = new bool[nodes];
+
+    for (int i = 0; i < nodes; i++)
+        for (int j = 0; j < nodes; j++)
+            visited2d[i][j] = false;   // na razie zadna krawedz nie istnieje, wiec wszystkie sa jako 'false'
+
+    for (int i = 0; i < nodes; i++)
+        visited[i] = false;       // na razie zadna krawedz nie zostala odwiedzona, wiec sa jako 'false'
+
+    for (int i = 0; i < min_edges; i++) // na poczatek generujemy mst
+    {
+        // pierwszy wierzcholek krawedzi w pierwszej iteracji
+        // ma wartosc 0 i zwieksza sie o 1 z kazda iteracja
+        visited[v1] = true;
+        e.v1 = v1;
+        do
+        {
+            v2 = rand() % nodes; // losowanie koncowego wierzcholka
+        } while (visited[v2]);
+        e.v2 = v2;
+        weight = rand() & 20; // losujemy wage dla krawedzi
+        e.weight = weight;
+        // dodajemy krawedz do listy i macierzy
+        grafDirect.addDirectEdge(e, e.v1);
+        grafDirect.addToMatrix(e.v1, e.v2);
+
+        // dodajemy krawedz do tablicy krawedzi istniejacych
+        visited2d[v1][v1] = true;
+        visited2d[v2][v2] = true;
+        visited2d[v1][v2] = true;
+        visited2d[v2][v1] = true;
+        v1++;
+    }
+
+    int k = nodes-1;
+    if (min_edges < edges)
+
+        for (int i = min_edges; i < edges; i++) // dodajemy brakujace krawedzie
+        {
+            int j;
+            int nodesLeft = k;
+            do
+            {
+                if(nodesLeft==0)
+                {
+                    k--;
+                    nodesLeft=k;
+                }
+                j = rand() % min_edges;
+                nodesLeft--;
+            } while (visited2d[k][j]); // losuj wierzcholek, dopoki krawedz o danych dwoch wierzcholkach nie isntieje
+
+            e.v1 = k;
+            e.v2 = j;
+            e.weight = rand() % 20;
+            grafDirect.addDirectEdge(e, e.v1);
+            grafDirect.addToMatrix(e.v1, e.v2);
+            visited2d[k][j]= true;
+            visited2d[j][k]= true; // oznaczamy krawedzie, ktore istnieja jako true
+            if(k == 0) // na wypadek, gdyby k uroslo za duze (seg fault)
+                break;
+        }
+    //visited2d = nullptr;
+}
+
+
 void Algorithms::Prim(int n)
 {
     Edge e;

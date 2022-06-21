@@ -27,6 +27,7 @@ class Algorithms
         //DSNode *Z;
 
         void Random_graph_Generator(int density, int nodes);
+        void Random_Directgraph_Generator(int density, int nodes);
         void Kruskal(int n);
         void Prim(int n);
         void Dijkstra_and_print(int n, int start);
